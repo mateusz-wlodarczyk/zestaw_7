@@ -1,6 +1,10 @@
-import React from "react";
-import { TextField } from "@mui/material";
-import { Field, FormikProps } from "formik";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+import { FormikProps } from "formik";
 
 export const InputSingleEl = <T,>({
   accessor,
@@ -10,19 +14,19 @@ export const InputSingleEl = <T,>({
   formik: FormikProps<T>;
 }) => {
   return (
-    <Field
-      error={Boolean(formik.touched[accessor] && formik.errors[accessor])}
-      id={accessor}
-      label={accessor}
-      name={accessor}
-      value={formik.values[accessor]}
-      helperText={
-        formik.touched[accessor] && formik.errors[accessor]
+    <FormControl>
+      <FormLabel>{accessor}</FormLabel>
+      <Input
+        id={accessor}
+        name={accessor}
+        value={formik.values[accessor] as string}
+        onChange={formik.handleChange}
+      />
+      <FormHelperText>
+        {formik.touched[accessor] && formik.errors[accessor]
           ? (formik.errors[accessor] as string) || ""
-          : ""
-      }
-      onBlur={formik.handleBlur}
-      onChange={formik.handleChange}
-    />
+          : ""}
+      </FormHelperText>
+    </FormControl>
   );
 };

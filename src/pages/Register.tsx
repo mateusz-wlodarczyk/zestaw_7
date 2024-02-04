@@ -1,63 +1,51 @@
-import { Box, Button, FormLabel, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { InfoAboutUser } from "../components/InfoAboutUser";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../redux/userSlice";
+import { useFormik } from "formik";
+import { useAuthContext } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../utils/constans";
+import {
+  LoginFormValues,
+  initialValuesFormikLogin,
+  yupSchemaLogin,
+} from "../utils/yupSchema";
+import { InputSingleEl } from "../components/InputSingleEl";
 
 export const Register = () => {
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const dispatch = useDispatch();
+  const [wrongLogValues, setWrongValues] = useState(true);
+  const { registerNewUser } = useAuthContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(registerUser({ password, email }));
-  };
+  const formik = useFormik<LoginFormValues>({
+    enableReinitialize: true,
+    initialValues: initialValuesFormikLogin,
 
-  const handleClear = () => {
-    setPassword("");
-    setEmail("");
-  };
+    onSubmit: () => {
+      registerNewUser(formik.values).then((resp) => {
+        if (resp) {
+          navigate(`${ROUTES.login}`);
+          //kiedys dodac toasta
+          return;
+        } else {
+          setWrongValues(resp);
+        }
+      });
+    },
+    validationSchema: yupSchemaLogin,
+  });
 
   return (
     <Box>
-      <form
+      <form onSubmit={formik.handleSubmit}>
+        <InputSingleEl<LoginFormValues> accessor="email" formik={formik} />
+        <InputSingleEl<LoginFormValues> accessor="password" formik={formik} />
 
-      // onSubmit={formik.handleSubmit}
-      >
-        {/* <InputSingleEl<LoginFormValues> accessor="email" formik={formik} />
-        <InputSingleEl<LoginFormValues> accessor="password" formik={formik} /> */}
-        {/* zastepstwo */}
-        <FormLabel>
-          Enter your email:
-          <Input
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </FormLabel>
-        <FormLabel>
-          Enter your password:
-          <Input
-            type="text"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </FormLabel>
-        <Button
-          type="submit"
-          onClick={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
-        >
-          submit
-        </Button>
-        <Button type="button" onClick={handleClear}>
-          clear
-        </Button>
+        <Button type="submit">submit</Button>
       </form>
 
       <InfoAboutUser link="login" text="has account?" />
+      {!wrongLogValues && <Text>error/problems!!</Text>}
     </Box>
   );
 };

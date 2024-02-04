@@ -1,6 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { ROUTES } from "../utils/constans";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 export const InfoAboutUser = ({

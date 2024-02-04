@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
+import { supabase } from "../utils/supabase";
+import { SingleUser } from "../utils/data";
 
 type AuthContextProps = {
-  isLogin: boolean;
-  // loggedUser: unknown;
-  loginUser: () => void;
+  loginUser: (loggedUser: SingleUser) => Promise<boolean>;
   logoutUser: () => void;
+  registerNewUser: (newUser: SingleUser) => Promise<boolean>;
+  isLogin: boolean;
 };
 
 const AuthContext = createContext<AuthContextProps | null>(null);
@@ -12,16 +14,45 @@ const AuthContext = createContext<AuthContextProps | null>(null);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
-  const loginUser = () => {
-    setIsLogin(true);
+  const loginUser = async (loggedUser: SingleUser) => {
+    try {
+      const { data } = await supabase.auth.signInWithPassword({
+        email: loggedUser.email,
+        password: loggedUser.password,
+      });
+      if (data.user !== null) {
+        setIsLogin(true);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   };
-
+  const registerNewUser = async (newUser: SingleUser) => {
+    try {
+      await supabase.auth.signUp({
+        email: newUser.email,
+        password: newUser.password,
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    } finally {
+      return false;
+    }
+  };
   const logoutUser = async function () {
     setIsLogin(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLogin, loginUser, logoutUser }}>
+    <AuthContext.Provider
+      value={{ isLogin, loginUser, logoutUser, registerNewUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

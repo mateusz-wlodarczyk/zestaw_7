@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { loadMovies } from "../utils/fetchMovies";
-import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
-import { SingleMovie } from "../components/SingleMovie";
+import { Box, Button, ButtonGroup } from "@chakra-ui/react";
+import { MoviesPage } from "../components/MoviesPage";
 import { useQuery } from "react-query";
 import { useClick } from "../hooks/useClick";
 import { useDispatch } from "react-redux";
@@ -41,7 +40,7 @@ export const HomePage = () => {
           fontSize: "12px",
         }}
       >
-        <SingleMovie loadedMovie={loadedMovie} />
+        <MoviesPage loadedMovie={loadedMovie} />
         <Box sx={{ margin: "auto" }}>
           <ButtonGroup>
             <Button onClick={handlePrevClick}>prev</Button>
