@@ -23,8 +23,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.user !== null) {
         setIsLogin(true);
         return true;
-      } else {
-        return false;
       }
     } catch (error) {
       console.log(error);

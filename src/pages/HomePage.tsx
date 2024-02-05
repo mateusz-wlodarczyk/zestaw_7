@@ -40,7 +40,7 @@ export const HomePage = () => {
           fontSize: "12px",
         }}
       >
-        <MoviesPage loadedMovie={loadedMovie} />
+        {loadedMovie !== undefined && <MoviesPage loadedMovie={loadedMovie} />}
         <Box sx={{ margin: "auto" }}>
           <ButtonGroup>
             <Button onClick={handlePrevClick}>prev</Button>

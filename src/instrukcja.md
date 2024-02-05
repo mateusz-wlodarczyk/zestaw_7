@@ -6,5 +6,3 @@ Twoim zadaniem będzie stworzyć stronę internetową będącą bazą wiedzy o f
 - Rest API, biblioteka axios do obsługi zapytań HTTP Link do API: https://swapi.dev/
   W zadaniu istnieje szeroka dowolność, nie zapomnij o ważnych elementach UX jak np. Loadery, odpowiednie filtrowanie.
   Stwórz live demo i wyślij nam link do githuba
-
-PLNJHGFDSAZ

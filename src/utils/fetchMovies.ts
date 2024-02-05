@@ -1,13 +1,9 @@
 import axios from "axios";
 import { URL_MOVIE } from "./constans";
+import { MovieResults } from "./types";
 
-export async function loadMovies(num: number) {
+export const loadMovies = async (num: number): Promise<MovieResults> => {
   const newUrl = URL_MOVIE + num;
-
-  try {
-    const { data } = await axios(newUrl);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
+  const { data } = await axios(newUrl);
+  return data;
+};

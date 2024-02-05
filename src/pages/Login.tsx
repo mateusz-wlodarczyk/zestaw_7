@@ -31,9 +31,8 @@ export const Login = () => {
           navigate(`${ROUTES.home}`);
           dispatch(loginUser({ email: formik.values.email }));
           return;
-        } else {
-          setWrongValues(resp);
         }
+        setWrongValues(resp);
       });
     },
     validationSchema: yupSchemaLogin,
